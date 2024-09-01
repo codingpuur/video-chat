@@ -17,7 +17,7 @@ export const useSocket = ()=>{
 
 export const SocketProvider=(props)=>{
 
-    const socket = useMemo(()=>io('localhost:4000'),[])
+    const socket = useMemo(()=>io('https://video-chat-dt3j.onrender.com'),[])
     return(
         <SocketContext.Provider value={socket}>
 
