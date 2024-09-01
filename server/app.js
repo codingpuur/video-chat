@@ -9,9 +9,21 @@ app.get('/',(req,res)=>{
   res.send('Hello, World!');
 })
 
-const io = new Server(4000, {
-  cors: true,
+const server = app.listen(port, () => {
+  console.log(`Express server is running on port ${port}`);
 });
+
+// Initialize WebSocket server with CORS configuration
+const io = new Server(server, {
+  cors: {
+    origin: "*", // You might want to restrict this to specific origins
+    methods: ["GET", "POST"]
+  }
+});
+
+// const io = new Server(port, {
+//   cors: true,
+// });
 
 const emailToSocketIdMap = new Map();
 const socketidToEmailMap = new Map();
@@ -46,4 +58,4 @@ io.on("connection", (socket) => {
   });
 });
 
-app.listen(port,()=>console.log("server on port 8000"))
+// app.listen(port,()=>console.log("server on port 8000"))
