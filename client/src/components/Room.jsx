@@ -2,9 +2,13 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useSocket } from '../context/SocketProvider'
 import ReactPlayer from 'react-player'
 import peer from '../services/Peer'
+import { useParams } from 'react-router-dom';
+
 
 
 const Room = () => {
+  const {roomid} = useParams(); 
+
   const socket = useSocket();
   const [remoteSocketId, setRemoteSocketId] = useState(null);
   const [myStream, setMyStream] = useState();
@@ -111,35 +115,56 @@ const Room = () => {
   ]);
 
   return (
-    <div>
-      <h1>Room Page</h1>
-      <h4>{remoteSocketId ? "Connected" : "No one in room"}</h4>
-      {myStream && <button onClick={sendStreams}>Send Stream</button>}
-      {remoteSocketId && <button onClick={handleCallUser}>CALL</button>}
+    <div  className=' bg-[#202124] min-h-screen text-white'>
+      {/* <h1>Room Page</h1> */}
+
+      <h4>{remoteSocketId ? "Connected" :    <div className='bg-white text-black p-4 w-96   rounded-md absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]'>
+      <h1 className='mb-2'>
+        Or share this meeting code with others you want in the meeting:
+      </h1>
+      <div className='flex items-center space-x-2'>
+        <div className='bg-[#F1F3F4]  px-4 py-1 rounded-lg text-black font-bold'>
+          {roomid}
+        </div>
+      
+      </div>
+    </div>
+      
+      
+      
+      
+      }</h4>
+      
+    
       {myStream && (
-        <>
-          <h1>My Stream</h1>
+        <div className=' absolute right-10 bottom-16 w-[200px] h-[200px] rounded-xl overflow-hidden' >
+          {/* <h1>My Stream</h1> */}
           <ReactPlayer
             playing
             muted
-            height="100px"
-            width="200px"
+            height="100%"
+            width="100%"
             url={myStream}
           />
-        </>
+        </div>
       )}
       {remoteStream && (
-        <>
-          <h1>Remote Stream</h1>
+        <div className=' h-[85vh] rounded-md'>
+          {/* <h1>Remote Stream</h1> */}
           <ReactPlayer
             playing
             muted
-            height="100px"
-            width="200px"
+           height="100%"
+            width="100%"
             url={remoteStream}
           />
-        </>
+        </div>
       )}
+      <div className=' bg-white/50 absolute bottom-2 w-fit left-1/2 translate-x-[-50%] space-x-10 h-10 flex items-center justify-center px-10 py-1 rounded-md'>
+
+        {myStream && <button disabled={!myStream} className='disabled:bg-gray-600 bg-green-500 px-2   font-semibold rounded-md h-full' onClick={sendStreams}>Send Stream</button>}
+        {remoteSocketId && <button  disabled={!remoteSocketId} className=' disabled:bg-gray-600 bg-green-500 px-2   font-semibold rounded-md h-full' onClick={handleCallUser}>CALL</button>}
+      </div>
     </div>
   );
 };
