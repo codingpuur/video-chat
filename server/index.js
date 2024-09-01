@@ -1,4 +1,11 @@
 const { Server } = require("socket.io");
+const express = require("express")
+
+const app = express();
+
+app.get('/',(req,res)=>{
+  res.send('Hello, World!');
+})
 
 const io = new Server(4000, {
   cors: true,
@@ -36,3 +43,5 @@ io.on("connection", (socket) => {
     io.to(to).emit("peer:nego:final", { from: socket.id, ans });
   });
 });
+
+app.listen(8000,()=>console.log("server on port 8000"))
